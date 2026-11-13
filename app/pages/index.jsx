@@ -13,6 +13,7 @@ import markdownDeflist from 'markdown-it-deflist'
 import mk from './katex'
 import chart from './chart'
 import mkitMermaid from './mermaid'
+import devIcons from './dev-icons'
 import linenumbers from './linenumbers'
 import image from './image'
 import diagram, { renderDiagram } from './diagram'
@@ -285,6 +286,13 @@ export default class PreviewPage extends React.Component {
       }, () => {
         if (refreshContent) {
           try {
+            // eslint-disable-next-line
+            // 注册本地图标包，让 architecture-beta 能用 dev:pc 这类图标。
+            // 必须在 initialize 之前，否则渲染时找不到。
+            try {
+              // eslint-disable-next-line
+              mermaid.registerIconPacks && mermaid.registerIconPacks([{ name: 'dev', icons: devIcons }])
+            } catch (e) { }
             // eslint-disable-next-line
             mermaid.initialize({ theme: (this.state.theme || 'light'), ...(options.maid || {}) })
             // eslint-disable-next-line
