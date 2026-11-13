@@ -1,3 +1,53 @@
+> 这是 [iamcco/markdown-preview.nvim](https://github.com/iamcco/markdown-preview.nvim) 的 fork，
+> 有几处自己的改动，安装方式与上游不同。见下面「从本 fork 安装」。
+
+### 从本 fork 安装
+
+仓库内已带构建产物 `app/out/`，安装时不要再执行 `mkdp#util#install()` 之外的构建步骤。
+
+[vim-plug](https://github.com/junegunn/vim-plug)：
+
+```vim
+Plug 'ajeep8/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug'] }
+```
+
+装完重启 vim，打开 `.md` 文件按 `<F8>`。
+
+`mkdp#util#install()` 只下载 `app/bin/` 下的服务端二进制，不会动 `app/out/`
+里的前端页面，所以本 fork 的改动不会在安装时被覆盖。首次安装后 `app/bin/`
+是空的，等它下载完（约 17 MB）再预览。
+
+### 本 fork 相比上游的改动
+
+1. mermaid 从 10.2.3 升到 12.3.0：12.x 才有 `architecture-beta` 的
+   `align row`/`align column`，排布多节点拓扑时需要。
+2. 内嵌 `dev` 图标包（`app/pages/dev-icons.js`），给 `architecture-beta` 补上
+   PC、笔记本、手机、VPS 等设备图标。上游只内置 cloud/database/disk/internet/server
+   五个，其余显示为问号。
+
+   用法：
+
+   ```
+   architecture-beta
+       service pc(dev:pc)[PC]
+       service nb(dev:notebook)[笔记本]
+       service phone(dev:phone)[手机]
+       service vps(dev:vps)[VPS]
+   ```
+
+   可用图标：`dev:server` `dev:pc` `dev:notebook` `dev:phone` `dev:vps`
+   `dev:database` `dev:disk` `dev:cloud` `dev:router`。
+
+   图标数据来自 [mdi](https://icones.js.org/collection/mdi)，内嵌在代码里，运行时
+   不联网。颜色取 `#087EBF`，与 mermaid 内置图标一致。
+
+   改动同时落在源码 `app/pages/index.jsx` 与构建产物
+   `app/out/_next/.../pages/index.js`：前者保证将来重新构建行为不变，后者是实际
+   被加载的文件。只改一处不生效。
+3. 样式调整：页面最大宽度 900px → 1800px，浅色主题背景与正文字体做了调整。
+
+---
+
 <h1 align="center"> ✨ Markdown Preview for (Neo)vim ✨ </h1>
 
 > Powered by ❤️
