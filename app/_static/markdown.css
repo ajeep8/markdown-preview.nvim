@@ -8,8 +8,9 @@
     --color-text-tertiary: #777;
     --color-text-link: #4078c0;
     --color-bg-primary: #fff;
+    --color-bg-primary: #f3f2ee;
     --color-bg-secondary: #fafbfc;
-    --color-bg-tertiary: #f8f8f8;
+    --color-bg-tertiary: #dadada;
     --color-border-primary: #ddd;
     --color-border-secondary: #eaecef;
     --color-border-tertiary: #d1d5da;
@@ -20,7 +21,7 @@
     --color-markdown-code-bg: #1b1f230d;
 }
 [data-theme="dark"] {
-    --color-text-primary: #c9d1d9;
+    --color-text-primary: #1f0909;
     --color-text-tertiary: #8b949e;
     --color-text-link: #58a6ff;
     --color-bg-primary: #0d1117;
@@ -49,9 +50,10 @@
 }
 .markdown-body {
   font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: "PT Serif", 'Times New Roman', Times, serif;
   font-size: 16px;
   color: var(--color-text-primary);
-  line-height: 1.6;
+  line-height: 1.5em;
   word-wrap: break-word;
   padding: 45px;
   background: var(--color-bg-primary);
@@ -115,30 +117,36 @@
   margin-bottom: 16px;
 }
 .markdown-body h1 {
-  margin: 0.67em 0;
-  padding-bottom: 0.3em;
-  font-size: 2.25em;
-  line-height: 1.2;
-  border-bottom: 1px solid var(--color-border-secondary);
+  font-size: 1.875em;
+  line-height: 1.6em;
+  margin-top: 2em;
 }
 .markdown-body h2 {
-  padding-bottom: 0.3em;
-  font-size: 1.75em;
-  line-height: 1.225;
-  border-bottom: 1px solid var(--color-border-secondary);
+  font-size: 1.3125em;
+  line-height: 1.15;
+  margin-top: 2.285714em;
+  margin-bottom: 1.15em;
+  font-weight: bold;
 }
 .markdown-body h3 {
-  font-size: 1.5em;
-  line-height: 1.43;
+  font-size: 1.3125em;
+  line-height: 1.15;
+  margin-top: 2.285714em;
+  margin-bottom: 1.15em;
+  font-weight: normal;
 }
 .markdown-body h4 {
-  font-size: 1.25em;
+  font-size: 1.125em;
+  margin-top: 2.67em;
 }
 .markdown-body h5 {
   font-size: 1em;
 }
 .markdown-body h6 {
   font-size: 1em;
+  border-bottom: 1px solid;
+  margin-bottom: 1.875em;
+  padding-bottom: 0.8125em;
   color: var(--color-text-tertiary);
 }
 .markdown-body hr {
@@ -309,3 +317,104 @@
   box-sizing: border-box;
   padding: 0;
 }
+/** initialize css counter */
+.markdown-body { counter-reset: h1 }
+h1 { counter-reset: h2 }
+h2 { counter-reset: h3 }
+h3 { counter-reset: h4 }
+h4 { counter-reset: h5 }
+h5 { counter-reset: h6 }
+
+ /** put counter result into headings */
+.markdown-body   h1:before {
+     counter-increment: h1;
+     content: counter(h1) " ";
+     font-size: 1em !important;
+ }
+
+.markdown-body   h2:before {
+     counter-increment: h2;
+     content: counter(h1) "." counter(h2) " ";
+     font-size: 1em !important;
+ }
+
+.markdown-body   h3:before /** override the default style for focused headings */ {
+     counter-increment: h3;
+     content: counter(h1) "." counter(h2) "." counter(h3) " ";
+     font-size: 1em !important;
+ }
+
+.markdown-body   h4:before {
+     counter-increment: h4;
+     content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) " ";
+     font-size: 1em !important;
+ }
+
+.markdown-body   h5:before {
+     counter-increment: h5;
+     content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) " ";
+     font-size: 1em !important;
+ }
+
+.markdown-body   h6:before {
+     counter-increment: h6;
+     content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) "." counter(h5) "." counter(h6) " ";
+     font-size: 1em !important;
+     color: #000080 !important
+ }
+
+/* Custom styles to display and style YAML front matter */
+.frontmatter, .metadata, .yaml-front-matter {
+    display: block !important; /* Ensure it's visible */
+    color: #555; /* Typora's color for meta-block */
+    background: transparent;
+    border: 0px;
+    margin-top: 1em;
+    margin-left: 1em;
+    min-height: 1.875rem;
+    padding: 0.5em 1em;
+    font-family: monospace;
+    white-space: pre-wrap;
+}
+
+/* Also ensure that any HR or H1 within this block are not styled as such */
+.frontmatter hr, .metadata hr, .yaml-front-matter hr {
+    display: none !important;
+}
+
+.frontmatter h1, .metadata h1, .yaml-front-matter h1 {
+    font-size: inherit !important;
+    font-weight: normal !important;
+    border-bottom: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+
+ /** override the default style for focused headings */
+ >h1:before,
+ >h2:before,
+ >h3:before,
+ >h4:before,
+ >h5:before,
+ >h6:before,
+ h1:before,
+ h2:before,
+ h3:before,
+ h4:before,
+ h5:before,
+ h6:before {
+     color: inherit;
+     border: inherit;
+     border-radius: inherit;
+     position: inherit;
+     left:initial;
+     float: none;
+     top:initial;
+     font-size: inherit;
+     padding-left: inherit;
+     padding-right: inherit;
+     vertical-align: inherit;
+     font-weight: inherit;
+     line-height: inherit;
+ }
